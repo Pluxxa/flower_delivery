@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+  <img src="{{ flower.image.url }}" class="card-img-top" alt="{{ flower.name }}" style="max-height: 500px; object-fit: cover;">
+  <div class="card w-100 h-100">
+    <h5 class="card-title">{{ flower.name }}</h5>
+    <p class="card-text">{{ flower.description }}</p>
+    <p class="card-text">Цена: {{ flower.price }} руб.</p>
+    <p>
+      <a href="{% url 'add_to_cart' flower.id %}" class="btn btn-primary">Добавить в корзину</a>
+
+    </p>
+  </div>
+</div>
+
+{% endblock %}

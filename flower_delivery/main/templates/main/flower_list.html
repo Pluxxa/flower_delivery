@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Задаем фиксированные размеры для изображений карусели */
+    .card img {
+
+        height: 200px;
+        object-fit: cover; /* cover Подгоняет изображение по размерам без обрезки, contain Подгоняет изображение по размерам без обрезки */
+        background-color: #f8f9fa; /* Цвет фона за изображением для пустых областей */
+    }
+</style>
+<h1>Каталог цветов</h1>
+<div class="row">
+    {% for flower in flowers %}
+    <div class="col-md-4">
+        <div class="card">
+            <img src="{{ flower.image.url }}" class="card-img-top" alt="{{ flower.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ flower.name }}</h5>
+                <p class="card-text">Цена: {{ flower.price }} руб.</p>
+                <a href="{% url 'flower_detail' flower.pk %}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

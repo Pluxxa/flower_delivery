@@ -1,0 +1,22 @@
+<!-- cart.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Ваша корзина</h2>
+
+    {% if cart.items.all %}
+        <ul>
+            {% for item in cart.items.all %}
+                <li>
+                    {{ item.flower.name }} - {{ item.quantity }} шт. - {{ item.get_total_price }} руб.
+                </li>
+            {% endfor %}
+        </ul>
+        <h3>Итоговая стоимость: {{ cart.total_price }} руб.</h3>
+        <h3>Всего товаров: {{ cart.total_items }}</h3>
+    {% else %}
+        <p>Ваша корзина пуста.</p>
+    {% endif %}
+{% endblock %}
+
+
