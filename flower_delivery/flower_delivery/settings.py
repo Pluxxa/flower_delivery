@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'cart',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'account'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Использование базы данных для хранения сессий
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',  # Уровень логирования
+            'class': 'logging.StreamHandler',  # Логирование в консоль
+        },
+        'file': {
+            'level': 'DEBUG',  # Уровень логирования
+            'class': 'logging.FileHandler',  # Логирование в файл
+            'filename': 'logs/django.log',  # Путь к файлу логов
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',  # Логировать все сообщения уровня DEBUG и выше
+            'propagate': True,
+        },
+    },
+}

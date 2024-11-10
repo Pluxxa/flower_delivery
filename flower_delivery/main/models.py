@@ -1,40 +1,29 @@
-# models.py
+# main/models.py
 from django.db import models
 from django.contrib.auth.models import User
 
 
 class Flower(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
+    description = models.TextField(default="Описание отсутствует")
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(default="Описание отсутствует", upload_to='flowers/')
 
     def __str__(self):
         return self.name
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)  # Связь с пользователем
-    session_key = models.CharField(max_length=40, null=True, blank=True)  # Для незарегистрированных пользователей
-    created_at = models.DateTimeField(auto_now_add=True)
+class OrderStatus(models.Model):
+    ORDER_STATUS_CHOICES = [
+        ('received', 'Принят к работе'),
+        ('in_progress', 'Находится в работе'),
+        ('in_delivery', 'В доставке'),
+        ('completed', 'Выполнен'),
+    ]
 
-    @property
-    def total_price(self):
-        return sum(item.get_total_price() for item in self.items.all())
-
-    @property
-    def total_items(self):
-        return sum(item.quantity for item in self.items.all())
-
-    def __str__(self):
-        return f"Cart of {self.user if self.user else self.session_key}"
-
-
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
-    flower = models.ForeignKey(Flower, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-
-    def get_total_price(self):
-        return self.flower.price * self.quantity
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='received')
 
     def __str__(self):
-        return f"{self.quantity} x {self.flower.name}"
+        return f"Заказ от {self.order_date} — Статус: {self.get_status_display()}"

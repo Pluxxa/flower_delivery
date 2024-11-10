@@ -2,7 +2,36 @@
 
 {% block content %}
 <h1>Личный кабинет</h1>
-<p>Добро пожаловать, {{ user.username }}!</p>
-<p><a href="{% url 'flower_list' %}">Перейти в каталог</a></p>
-<p><a href="{% url 'cart' %}">Перейти в корзину</a></p>
+
+<h2>Корзина пользователя</h2>
+{% if user_cart %}
+    <p>Корзина пользователя существует.</p>
+    {% if user_cart_items %}
+        <ul>
+            {% for item in user_cart_items %}
+                <li>{{ item.product.name }} - Количество: {{ item.quantity }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Корзина пустая.</p>
+    {% endif %}
+{% else %}
+    <p>Корзина для пользователя не найдена.</p>
+{% endif %}
+
+<h2>Корзина сессии (если есть)</h2>
+{% if session_cart %}
+    <p>Корзина сессии существует.</p>
+    {% if session_cart_items %}
+        <ul>
+            {% for item in session_cart_items %}
+                <li>{{ item.product.name }} - Количество: {{ item.quantity }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Корзина сессии пустая.</p>
+    {% endif %}
+{% else %}
+    <p>Корзина для сессии не найдена.</p>
+{% endif %}
 {% endblock %}

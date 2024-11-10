@@ -1,0 +1,31 @@
+<!-- templates/admin/manage_orders.html -->
+<h2>Управление заказами</h2>
+
+<table>
+    <tr>
+        <th>Пользователь</th>
+        <th>Дата заказа</th>
+        <th>Текущий статус</th>
+        <th>Изменить статус</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.order_date }}</td>
+        <td>{{ order.get_status_display }}</td>
+        <td>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order_id" value="{{ order.id }}">
+                <select name="status">
+                    <option value="received" {% if order.status == "received" %}selected{% endif %}>Принят к работе</option>
+                    <option value="in_progress" {% if order.status == "in_progress" %}selected{% endif %}>Находится в работе</option>
+                    <option value="in_delivery" {% if order.status == "in_delivery" %}selected{% endif %}>В доставке</option>
+                    <option value="completed" {% if order.status == "completed" %}selected{% endif %}>Выполнен</option>
+                </select>
+                <button type="submit">Обновить</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
